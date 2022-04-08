@@ -12,11 +12,16 @@ const errorResponse = (error: any, res: any) => {
 
 NationalParksRoute.get("/", async (req, res) => {
   try {
+    const { uid } = req.query;
+    const query: any = {
+      ...(uid ? { uid: uid as string } : {}),
+    };
+
     const client = await getClient();
     const results = await client
       .db()
       .collection<CompletedParks>("attendedParks")
-      .find()
+      .find(query)
       .toArray();
     res.json(results);
   } catch (err) {
