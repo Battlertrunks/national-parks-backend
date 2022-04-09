@@ -1,9 +1,17 @@
 import { ObjectId } from "mongodb";
 
-export default interface ShoutOut {
-  _id?: ObjectId;
+export default interface TrendingCardsModel {
+  uid?: string;
   id: string;
+  _id?: ObjectId;
   fullName: string;
-  activities: string[];
   description: string;
+  parkCode: string;
+  activities: Activities[];
+}
+
+interface Activities {
+  name: string;
+  id: string;
+  completed: boolean;
 }

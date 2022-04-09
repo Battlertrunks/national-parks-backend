@@ -62,13 +62,16 @@ NationalParksRoute.put("/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const updatedParkProgress: CompletedParks = req.body;
+    delete updatedParkProgress._id;
     const client = await getClient();
     const results = await client
       .db()
       .collection<CompletedParks>("attendedParks")
-      .updateOne({ _id: new ObjectId(id) }, updatedParkProgress);
+      .replaceOne({ _id: new ObjectId(id) }, updatedParkProgress);
+
     if (results.modifiedCount) {
-      res.json(updatedParkProgress).status(200);
+      res.status(200);
+      res.json(updatedParkProgress);
     } else {
       res.status(404).send(`ID of ${id} can not be found.`);
     }
