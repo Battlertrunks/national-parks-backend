@@ -9,15 +9,33 @@ const errorResponse = (error: any, res: any) => {
   res.status(500).json({ message: "Internal Server Error" });
 };
 
-ParkReview.get("/", async (req, res) => {
+ParkReview.get("/:parkid", async (req, res) => {
   try {
+    const parkCode = req.params.parkid;
+
     const client = await getClient();
     const results = await client
       .db()
       .collection<CommentModel>("parkReview")
-      .find()
+      .find({ park_code: parkCode })
       .toArray();
     res.json(results);
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+ParkReview.post("/", async (req, res) => {
+  try {
+    const commentPost: CommentModel = req.body;
+
+    const client = await getClient();
+    await client
+      .db()
+      .collection<CommentModel>("parkReview")
+      .insertOne(commentPost);
+
+    res.json(commentPost).status(201);
   } catch (err) {
     errorResponse(err, res);
   }
