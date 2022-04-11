@@ -11,13 +11,34 @@ const errorResponse = (error: any, res: any) => {
 
 ParkReview.get("/", async (req, res) => {
   try {
+    const { parkCode } = req.query;
+    const query: any = {
+      ...(parkCode ? { park_code: parkCode as string } : {}),
+    };
+
     const client = await getClient();
     const results = await client
       .db()
       .collection<CommentModel>("parkReview")
-      .find()
+      .find(query)
       .toArray();
     res.json(results);
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+ParkReview.post("/", async (req, res) => {
+  try {
+    const commentPost: CommentModel = req.body;
+
+    const client = await getClient();
+    await client
+      .db()
+      .collection<CommentModel>("parkReview")
+      .insertOne(commentPost);
+
+    res.json(commentPost).status(201);
   } catch (err) {
     errorResponse(err, res);
   }
