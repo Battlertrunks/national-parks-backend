@@ -20,7 +20,7 @@ NationalParksRoute.get("/", async (req, res) => {
     const client = await getClient();
     const results = await client
       .db()
-      .collection<CompletedParks>("attendedParks")
+      .collection<CompletedParks>("parkAccount")
       .find(query)
       .toArray();
     res.json(results);
@@ -35,7 +35,7 @@ NationalParksRoute.get("/:id", async (req, res) => {
     const client = await getClient();
     const result = await client
       .db()
-      .collection<CompletedParks>("attendedParks")
+      .collection<CompletedParks>("parkAccount")
       .findOne({ _id: new ObjectId(id) });
     res.json(result).status(200);
   } catch (err) {
@@ -49,7 +49,7 @@ NationalParksRoute.post("/", async (req, res) => {
     const client = await getClient();
     await client
       .db()
-      .collection<CompletedParks>("attendedParks")
+      .collection<CompletedParks>("parkAccount")
       .insertOne(addedPark);
 
     res.json(addedPark).status(201);
@@ -66,7 +66,7 @@ NationalParksRoute.put("/:id", async (req, res) => {
     const client = await getClient();
     const results = await client
       .db()
-      .collection<CompletedParks>("attendedParks")
+      .collection<CompletedParks>("parkAccount")
       .replaceOne({ _id: new ObjectId(id) }, updatedParkProgress);
 
     if (results.modifiedCount) {
@@ -86,7 +86,7 @@ NationalParksRoute.delete("/:id", async (req, res) => {
     const client = await getClient();
     const result = await client
       .db()
-      .collection<CompletedParks>("attendedParks")
+      .collection<CompletedParks>("parkAccount")
       .deleteOne({ _id: new ObjectId(id) });
 
     if (result.deletedCount) {
