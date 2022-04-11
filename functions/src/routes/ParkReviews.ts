@@ -9,15 +9,18 @@ const errorResponse = (error: any, res: any) => {
   res.status(500).json({ message: "Internal Server Error" });
 };
 
-ParkReview.get("/:parkid", async (req, res) => {
+ParkReview.get("/", async (req, res) => {
   try {
-    const parkCode = req.params.parkid;
+    const { parkCode } = req.query;
+    const query: any = {
+      ...(parkCode ? { park_code: parkCode as string } : {}),
+    };
 
     const client = await getClient();
     const results = await client
       .db()
       .collection<CommentModel>("parkReview")
-      .find({ park_code: parkCode })
+      .find(query)
       .toArray();
     res.json(results);
   } catch (err) {
