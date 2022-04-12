@@ -56,4 +56,23 @@ parkPost.put("/:id", async (req, res) => {
   }
 });
 
+parkPost.delete("/:id", async (req, res) => {
+  try {
+    const id: string = req.params.id;
+    const client = await getClient();
+    const result = await client
+      .db()
+      .collection<PostModel>("parkPosts")
+      .deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount) {
+      res.sendStatus(204);
+    } else {
+      res.status(404).send(`ID of ${id} not found`);
+    }
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
 export default parkPost;
