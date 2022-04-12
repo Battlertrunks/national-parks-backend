@@ -14,10 +14,21 @@ parkPost.get("/", async (req, res) => {
     const client = await getClient();
     const results = await client
       .db()
-      .collection<PostModel>("parkReview")
+      .collection<PostModel>("parkPosts")
       .find()
       .toArray();
     res.json(results);
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+parkPost.post("/", async (req, res) => {
+  try {
+    const post = req.body;
+    const client = await getClient();
+    client.db().collection<PostModel>("parkPosts").insertOne(post);
+    res.json(post).status(201);
   } catch (err) {
     errorResponse(err, res);
   }
