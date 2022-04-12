@@ -1,3 +1,4 @@
+import { ObjectId } from "bson";
 import express from "express";
 import { getClient } from "../db";
 import PostModel from "../models/PostModel";
@@ -29,6 +30,27 @@ parkPost.post("/", async (req, res) => {
     const client = await getClient();
     client.db().collection<PostModel>("parkPosts").insertOne(post);
     res.json(post).status(201);
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+parkPost.put("/:id", async (req, res) => {
+  try {
+    const id: string = req.params.id;
+    const updatedPost: PostModel = req.body;
+    delete updatedPost._id;
+    const client = await getClient();
+    const result = await client
+      .db()
+      .collection<PostModel>("parkPosts")
+      .replaceOne({ _id: new ObjectId(id) }, updatedPost);
+
+    if (result.modifiedCount) {
+      res.json(updatedPost).status(200);
+    } else {
+      res.status(404).send(`ID of ${id} not found.`);
+    }
   } catch (err) {
     errorResponse(err, res);
   }
