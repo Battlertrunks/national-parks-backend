@@ -35,19 +35,45 @@ parkPost.post("/", async (req, res) => {
   }
 });
 
-parkPost.put("/:id", async (req, res) => {
+parkPost.put("/comment/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
-    const updatedPost: PostModel = req.body;
-    delete updatedPost._id;
+    const newComment = req.body;
+    newComment.id = new ObjectId();
     const client = await getClient();
     const result = await client
       .db()
       .collection<PostModel>("parkPosts")
-      .replaceOne({ _id: new ObjectId(id) }, updatedPost);
+      .updateOne(
+        { _id: new ObjectId(id) },
+        {
+          $push: { comments: newComment },
+        }
+      );
 
     if (result.modifiedCount) {
-      res.json(updatedPost).status(200);
+      res.json(newComment).status(200);
+    } else {
+      res.status(404).send(`ID of ${id} not found.`);
+    }
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+parkPost.put("/like/:id", async (req, res) => {
+  try {
+    const id: string = req.params.id;
+    const likedPost: PostModel = req.body;
+    delete likedPost._id;
+    const client = await getClient();
+    const result = await client
+      .db()
+      .collection<PostModel>("parkPosts")
+      .replaceOne({ _id: new ObjectId(id) }, likedPost);
+
+    if (result.modifiedCount) {
+      res.json(likedPost).status(200);
     } else {
       res.status(404).send(`ID of ${id} not found.`);
     }
@@ -74,5 +100,18 @@ parkPost.delete("/:id", async (req, res) => {
     errorResponse(err, res);
   }
 });
+
+// parkPost.put("/comment", async (req, res) => {
+//   try {
+//       const id: string = req.
+//     const comment: CommentModel = req.body;
+
+//     const client = await getClient();
+//     await client.db().collection<PostModel>("parkPosts").replaceOne()
+
+//   } catch (err) {
+//     errorResponse(err, res);
+//   }
+// });
 
 export default parkPost;

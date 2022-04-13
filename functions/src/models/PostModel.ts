@@ -1,4 +1,5 @@
 import { ObjectId } from "bson";
+import CommentModel from "./CommentModel";
 
 export default interface PostModel {
   uid: string;
@@ -9,6 +10,7 @@ export default interface PostModel {
   imageURL?: string;
   _id?: ObjectId;
   likes: Likes;
+  comments: CommentModel[];
 }
 
 interface Likes {
