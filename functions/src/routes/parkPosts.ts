@@ -1,6 +1,7 @@
 import { ObjectId } from "bson";
 import express from "express";
 import { getClient } from "../db";
+import CommentModel from "../models/CommentModel";
 import PostModel from "../models/PostModel";
 
 const parkPost = express.Router();
@@ -38,8 +39,8 @@ parkPost.post("/", async (req, res) => {
 parkPost.put("/comment/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
-    const newComment = req.body;
-    newComment.id = new ObjectId();
+    const newComment: CommentModel = req.body;
+    newComment._id = new ObjectId(32);
     const client = await getClient();
     const result = await client
       .db()
