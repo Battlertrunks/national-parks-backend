@@ -62,6 +62,29 @@ parkPost.put("/comment/:id", async (req, res) => {
   }
 });
 
+parkPost.put("/:id/comment/delete/:commentid", async (req, res) => {
+  try {
+    const id: string = req.params.id;
+    const commentId: string = req.params.commentid;
+
+    const client = await getClient();
+    const result = await client
+      .db()
+      .collection<PostModel>("parkPosts")
+      .updateOne(
+        { _id: new ObjectId(id) },
+        { $pull: { comments: { _id: new ObjectId(commentId) } } }
+      );
+    if (result.modifiedCount) {
+      res.json(result).status(200);
+    } else {
+      res.status(404).send(`ID of ${id} not found.`);
+    }
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
 parkPost.put("/like/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
