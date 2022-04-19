@@ -1,7 +1,7 @@
 import { ObjectId } from "bson";
 import express from "express";
 import { getClient } from "../db";
-import CompletedParks from "../models/completedParks";
+import CompletedParks from "../models/CompletedParks";
 
 const NationalParksRoute = express.Router();
 
