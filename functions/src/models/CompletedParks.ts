@@ -2,6 +2,7 @@ import { ObjectId } from "mongodb";
 
 export default interface TrendingCardsModel {
   uid?: string;
+  username: string;
   id: string;
   _id?: ObjectId;
   fullName: string;
