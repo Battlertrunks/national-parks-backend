@@ -4,14 +4,14 @@ import { getClient } from "../db";
 import CommentModel from "../models/CommentModel";
 import PostModel from "../models/PostModel";
 
-const parkPostsRoute = express.Router();
+const parkPostsRouter = express.Router();
 
 const errorResponse = (error: any, res: any) => {
   console.error("FAIL", error);
   res.status(500).json({ message: "Internal Server Error" });
 };
 
-parkPostsRoute.get("/", async (req, res) => {
+parkPostsRouter.get("/", async (req, res) => {
   try {
     const client = await getClient();
     const results = await client
@@ -25,7 +25,7 @@ parkPostsRoute.get("/", async (req, res) => {
   }
 });
 
-parkPostsRoute.post("/", async (req, res) => {
+parkPostsRouter.post("/", async (req, res) => {
   try {
     const post = req.body;
     const client = await getClient();
@@ -36,7 +36,7 @@ parkPostsRoute.post("/", async (req, res) => {
   }
 });
 
-parkPostsRoute.put("/comment/:id", async (req, res) => {
+parkPostsRouter.put("/comment/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const newComment: CommentModel = req.body;
@@ -62,7 +62,7 @@ parkPostsRoute.put("/comment/:id", async (req, res) => {
   }
 });
 
-parkPostsRoute.put("/:id/comment/delete/:commentid", async (req, res) => {
+parkPostsRouter.put("/:id/comment/delete/:commentid", async (req, res) => {
   try {
     const id: string = req.params.id;
     const commentId: string = req.params.commentid;
@@ -85,7 +85,7 @@ parkPostsRoute.put("/:id/comment/delete/:commentid", async (req, res) => {
   }
 });
 
-parkPostsRoute.put("/like/:id", async (req, res) => {
+parkPostsRouter.put("/like/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const likedPost: PostModel = req.body;
@@ -106,7 +106,7 @@ parkPostsRoute.put("/like/:id", async (req, res) => {
   }
 });
 
-parkPostsRoute.delete("/:id", async (req, res) => {
+parkPostsRouter.delete("/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const client = await getClient();
@@ -138,4 +138,4 @@ parkPostsRoute.delete("/:id", async (req, res) => {
 //   }
 // });
 
-export default parkPostsRoute;
+export default parkPostsRouter;
