@@ -4,14 +4,14 @@ import { getClient } from "../db";
 import CommentModel from "../models/CommentModel";
 import PostModel from "../models/PostModel";
 
-const parkPost = express.Router();
+const parkPostRoute = express.Router();
 
 const errorResponse = (error: any, res: any) => {
   console.error("FAIL", error);
   res.status(500).json({ message: "Internal Server Error" });
 };
 
-parkPost.get("/", async (req, res) => {
+parkPostRoute.get("/", async (req, res) => {
   try {
     const client = await getClient();
     const results = await client
@@ -25,7 +25,7 @@ parkPost.get("/", async (req, res) => {
   }
 });
 
-parkPost.post("/", async (req, res) => {
+parkPostRoute.post("/", async (req, res) => {
   try {
     const post = req.body;
     const client = await getClient();
@@ -36,7 +36,7 @@ parkPost.post("/", async (req, res) => {
   }
 });
 
-parkPost.put("/comment/:id", async (req, res) => {
+parkPostRoute.put("/comment/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const newComment: CommentModel = req.body;
@@ -62,7 +62,7 @@ parkPost.put("/comment/:id", async (req, res) => {
   }
 });
 
-parkPost.put("/:id/comment/delete/:commentid", async (req, res) => {
+parkPostRoute.put("/:id/comment/delete/:commentid", async (req, res) => {
   try {
     const id: string = req.params.id;
     const commentId: string = req.params.commentid;
@@ -85,7 +85,7 @@ parkPost.put("/:id/comment/delete/:commentid", async (req, res) => {
   }
 });
 
-parkPost.put("/like/:id", async (req, res) => {
+parkPostRoute.put("/like/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const likedPost: PostModel = req.body;
@@ -106,7 +106,7 @@ parkPost.put("/like/:id", async (req, res) => {
   }
 });
 
-parkPost.delete("/:id", async (req, res) => {
+parkPostRoute.delete("/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const client = await getClient();
@@ -138,4 +138,4 @@ parkPost.delete("/:id", async (req, res) => {
 //   }
 // });
 
-export default parkPost;
+export default parkPostRoute;
