@@ -3,14 +3,14 @@ import express from "express";
 import { getClient } from "../db";
 import CommentModel from "../models/CommentModel";
 
-const parkReviewRoute = express.Router();
+const parkReviewsRoute = express.Router();
 
 const errorResponse = (error: any, res: any) => {
   console.error("FAIL", error);
   res.status(500).json({ message: "Internal Server Error" });
 };
 
-parkReviewRoute.get("/", async (req, res) => {
+parkReviewsRoute.get("/", async (req, res) => {
   try {
     const { parkCode } = req.query;
     const query: any = {
@@ -29,7 +29,7 @@ parkReviewRoute.get("/", async (req, res) => {
   }
 });
 
-parkReviewRoute.post("/", async (req, res) => {
+parkReviewsRoute.post("/", async (req, res) => {
   try {
     const commentPost: CommentModel = req.body;
 
@@ -45,7 +45,7 @@ parkReviewRoute.post("/", async (req, res) => {
   }
 });
 
-parkReviewRoute.delete("/:id", async (req, res) => {
+parkReviewsRoute.delete("/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const client = await getClient();
@@ -64,4 +64,4 @@ parkReviewRoute.delete("/:id", async (req, res) => {
   }
 });
 
-export default parkReviewRoute;
+export default parkReviewsRoute;
