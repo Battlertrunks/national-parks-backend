@@ -17,3 +17,5 @@ interface Likes {
   amountOfLikes: number;
   uids: string[];
 }
+
+//
