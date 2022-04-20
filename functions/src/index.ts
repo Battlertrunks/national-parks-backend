@@ -1,13 +1,13 @@
 import * as functions from "firebase-functions";
 import express from "express";
 import cors from "cors";
-import NationalParksRoute from "./routes/NationalParksRoute";
-import ParkReviews from "./routes/ParkReviews";
+import nationalParksRoute from "./routes/nationalParksRoute";
+import parkReviews from "./routes/parkReviews";
 import parkPosts from "./routes/parkPosts";
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/parkAccount", NationalParksRoute);
-app.use("/parkReview", ParkReviews);
+app.use("/parkAccount", nationalParksRoute);
+app.use("/parkReview", parkReviews);
 app.use("/parkPosts", parkPosts);
 export const api = functions.https.onRequest(app);

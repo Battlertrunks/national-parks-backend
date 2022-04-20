@@ -3,14 +3,14 @@ import express from "express";
 import { getClient } from "../db";
 import CompletedParks from "../models/CompletedParks";
 
-const NationalParksRoute = express.Router();
+const nationalParksRoute = express.Router();
 
 const errorResponse = (error: any, res: any) => {
   console.error("FAIL", error);
   res.status(500).json({ message: "Internal Server Error" });
 };
 
-NationalParksRoute.get("/", async (req, res) => {
+nationalParksRoute.get("/", async (req, res) => {
   try {
     const { uid } = req.query;
     const query: any = {
@@ -29,7 +29,7 @@ NationalParksRoute.get("/", async (req, res) => {
   }
 });
 
-NationalParksRoute.get("/:id", async (req, res) => {
+nationalParksRoute.get("/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const client = await getClient();
@@ -43,7 +43,7 @@ NationalParksRoute.get("/:id", async (req, res) => {
   }
 });
 
-NationalParksRoute.post("/", async (req, res) => {
+nationalParksRoute.post("/", async (req, res) => {
   try {
     const addedPark: CompletedParks = req.body;
     const client = await getClient();
@@ -58,7 +58,7 @@ NationalParksRoute.post("/", async (req, res) => {
   }
 });
 
-NationalParksRoute.put("/:id", async (req, res) => {
+nationalParksRoute.put("/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const updatedParkProgress: CompletedParks = req.body;
@@ -80,7 +80,7 @@ NationalParksRoute.put("/:id", async (req, res) => {
   }
 });
 
-NationalParksRoute.delete("/:id", async (req, res) => {
+nationalParksRoute.delete("/:id", async (req, res) => {
   try {
     const id: string = req.params.id;
     const client = await getClient();
@@ -99,4 +99,4 @@ NationalParksRoute.delete("/:id", async (req, res) => {
   }
 });
 
-export default NationalParksRoute;
+export default nationalParksRoute;

@@ -2,14 +2,14 @@ import express from "express";
 import { getClient } from "../db";
 import CommentModel from "../models/CommentModel";
 
-const ParkReview = express.Router();
+const parkReview = express.Router();
 
 const errorResponse = (error: any, res: any) => {
   console.error("FAIL", error);
   res.status(500).json({ message: "Internal Server Error" });
 };
 
-ParkReview.get("/", async (req, res) => {
+parkReview.get("/", async (req, res) => {
   try {
     const { parkCode } = req.query;
     const query: any = {
@@ -28,7 +28,7 @@ ParkReview.get("/", async (req, res) => {
   }
 });
 
-ParkReview.post("/", async (req, res) => {
+parkReview.post("/", async (req, res) => {
   try {
     const commentPost: CommentModel = req.body;
 
@@ -44,4 +44,4 @@ ParkReview.post("/", async (req, res) => {
   }
 });
 
-export default ParkReview;
+export default parkReview;
