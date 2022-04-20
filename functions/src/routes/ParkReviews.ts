@@ -1,3 +1,4 @@
+import { ObjectId } from "bson";
 import express from "express";
 import { getClient } from "../db";
 import CommentModel from "../models/CommentModel";
@@ -39,6 +40,25 @@ parkReview.post("/", async (req, res) => {
       .insertOne(commentPost);
 
     res.json(commentPost).status(201);
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+parkReview.delete("/:id", async (req, res) => {
+  try {
+    const id: string = req.params.id;
+    const client = await getClient();
+    const result = await client
+      .db()
+      .collection<CommentModel>("parkReview")
+      .deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount) {
+      res.sendStatus(204);
+    } else {
+      res.status(404).send(`ID of ${id} not found`);
+    }
   } catch (err) {
     errorResponse(err, res);
   }
